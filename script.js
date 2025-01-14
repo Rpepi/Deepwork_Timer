@@ -5,7 +5,8 @@ const app = Vue.createApp({
       timeRemaining: 25 * 60,
       intervalId: null,
       radius: 100,
-      customTime: 25, // Temps par défaut en minutes pour l'input personnalisé
+      minutes: 25, // Minutes par défaut
+      seconds: 0, // Secondes par défaut
       isExpired: false, // Indicateur pour l'animation de l'expiration
       timerRunning: false, // Indicateur pour savoir si le minuteur est en cours
     };
@@ -48,6 +49,7 @@ const app = Vue.createApp({
     pauseTimer() {
       clearInterval(this.intervalId);
       this.intervalId = null;
+      this.timerRunning = false;
     },
     resetTimer() {
       clearInterval(this.intervalId);
@@ -55,6 +57,11 @@ const app = Vue.createApp({
       this.timeRemaining = this.totalTime;
       this.isExpired = false;
       this.timerRunning = false; // Revenir à l'état initial
+    },
+    updateTime() {
+      // Mettre à jour le totalTime chaque fois que les minutes ou les secondes changent
+      this.totalTime = this.minutes * 60 + this.seconds;
+      this.timeRemaining = this.totalTime;
     },
     setTime(newTime) {
       this.totalTime = newTime;
