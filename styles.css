@@ -1,0 +1,33 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+  }
+  
+  button {
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease;
+  }
+  
+  button:hover {
+    transform: scale(1.05);
+  }
+  
+  .progress-circle {
+    transition: stroke-dashoffset 1s ease;
+  }
+  
+  /* Animation de l'effet de lumière à l'expiration */
+  .glowing {
+    animation: glowAnimation 1s infinite alternate;
+  }
+  
+  @keyframes glowAnimation {
+    0% {
+      stroke: #ffffff;
+      filter: blur(2px);
+    }
+    100% {
+      stroke: #ffcc00;
+      filter: blur(8px);
+    }
+  }
+  
