@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <svg style="position: absolute; width: 0; height: 0;">
+     <defs>
+        <filter id="liquid">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="liquid" />
+        </filter>
+      </defs>
+    </svg>
+  <div class="container">
+    <select id="timePresets">
+      <option value="custom">Personnalisé</option>
+      <option value="60">Focus (1h)</option>
+      <option value="120">Deep Work (2h)</option>
+    </select>
+
+    <div class="timer-display">
+      <div class="time-unit">
+        <input type="number" id="minutes" min="0" max="59" value="25">
+        <span class="time-label">minutes</span>
+      </div>
+      <span class="time-separator">:</span>
+      <div class="time-unit">
+        <input type="number" id="seconds" min="0" max="59" value="00">
+        <span class="time-label">secondes</span>
+      </div>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar"></div>
+    </div>
+    
+    <div class="controls">
+      <button id="startBtn">Démarrer</button>
+      <button id="pauseBtn">Pause</button>
+      <button id="resetBtn">Réinitialiser</button>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html> 
