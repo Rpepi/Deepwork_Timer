@@ -1,5 +1,15 @@
 class DeepWorkTimer {
   constructor() {
+    this.port = chrome.runtime.connect({ name: 'timer-port' });
+    this.port.onMessage.addListener((message) => {
+      if (message.action === 'TIMER_UPDATE') {
+        this.timeLeft = message.timeLeft;
+        this.totalTime = message.totalTime;
+        this.updateDisplay();
+        this.updateProgressBar(this.timeLeft / this.totalTime);
+      }
+    });
+
     this.minutesInput = document.getElementById('minutes');
     this.secondsInput = document.getElementById('seconds');
     this.startBtn = document.getElementById('startBtn');
@@ -16,12 +26,6 @@ class DeepWorkTimer {
     this.setupEventListeners();
 
     chrome.runtime.onMessage.addListener((message) => {
-      if (message.action === 'TIMER_UPDATE') {
-        this.timeLeft = message.timeLeft;
-        this.totalTime = message.totalTime;
-        this.updateDisplay();
-        this.updateProgressBar(this.timeLeft / this.totalTime);
-      }
       if (message.action === 'TIMER_COMPLETE') {
         this.showReward();
       }

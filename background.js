@@ -2,8 +2,18 @@ let timer = {
   timeLeft: 0,
   totalTime: 0,
   isRunning: false,
-  timerId: null
+  timerId: null,
+  ports: new Set()
 };
+
+// Gestion de la connexion persistante
+chrome.runtime.onConnect.addListener((port) => {
+  timer.ports.add(port);
+  
+  port.onDisconnect.addListener(() => {
+    timer.ports.delete(port);
+  });
+});
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
@@ -30,12 +40,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   return true;
 });
 
+function broadcastMessage(message) {
+  timer.ports.forEach(port => {
+    try {
+      port.postMessage(message);
+    } catch (e) {
+      timer.ports.delete(port);
+    }
+  });
+}
+
 function startTimer() {
   if (timer.timerId) clearInterval(timer.timerId);
   timer.timerId = setInterval(() => {
     if (timer.timeLeft > 0) {
       timer.timeLeft--;
-      chrome.runtime.sendMessage({
+      broadcastMessage({
         action: 'TIMER_UPDATE',
         timeLeft: timer.timeLeft,
         totalTime: timer.totalTime
